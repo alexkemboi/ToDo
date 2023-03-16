@@ -28,13 +28,15 @@ function Footer() {
     return (
         <div className="container">
             <div className="card">
+
                 <div className="card-header text-warning bg-dark">
+                <button onClick={getActivity} className="text-secondary form-control"><i className="fas fa-edit"></i></button>
+                    
                 <i className="fas fa-list"></i> Activities
                 </div>
                 <div className="card-body">
                 <table className="table table-striped">
                     <thead className="thead-dark">
-                    <button onClick={getActivity} className="text-secondary form-control"><i className="fas fa-edit"></i></button>
                            
                         <tr>
                         <th scope="col">#</th>

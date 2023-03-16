@@ -52,7 +52,7 @@ app.get("/getActivities", (req, res) => {
     }
     console.log("Activity selected from database succesfully ");
     res.send(JSON.stringify(result));
-    console.log(results);
+    console.log(result);
     //result.setHeader("Content-Type", "application/json");
   });
 });
