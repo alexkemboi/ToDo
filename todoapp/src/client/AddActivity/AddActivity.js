@@ -19,7 +19,7 @@ function AddActivity() {
           })
           .then((data) => {
             // handle data returned by server
-            console.log(data);
+            document.getElementById("successMesage").innerHTML='<h6 class="text-success">Activity added succefully</h6>'
           })
           .catch((error) => {
             // handle errors
@@ -36,6 +36,7 @@ function AddActivity() {
             </div>
           
             <div className="card-body">
+              <div id="successMesage"></div>
                 <div className="row">
                     <div className="col-12">
                     <label>Activity</label>

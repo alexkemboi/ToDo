@@ -1,4 +1,30 @@
 function Footer() {
+    function getActivity() {
+            const activityTable = document.getElementById("acitvityTable");
+          
+            fetch("http://localhost:3000/getActivities")
+              .then((response) => {
+                // handle response from server
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then((data) => {
+                // handle data returned by server
+                console.log(data);
+                let tr='';
+                data.forEach(item=>{
+                    tr+=`<tr><td>${item.No}</td><td>${item.Activity}</td></tr>`
+                });
+                activityTable.innerHTML=tr;
+                 })
+              .catch((error) => {
+                // handle errors
+                console.error('Error:', error);
+              });
+          
+        }
     return (
         <div className="container">
             <div className="card">
@@ -8,6 +34,8 @@ function Footer() {
                 <div className="card-body">
                 <table className="table table-striped">
                     <thead className="thead-dark">
+                    <button onClick={getActivity} className="text-secondary form-control"><i className="fas fa-edit"></i></button>
+                           
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Task</th>
@@ -15,13 +43,13 @@ function Footer() {
                         <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="acitvityTable">
                         <tr>
                         <th scope="row">1</th>
                         <td>Complete CSS tutorial</td>
                         <td><span className="badge badge-success">Completed</span></td>
                         <td>
-                            <a href="#" className="text-secondary"><i className="fas fa-edit"></i></a>
+                            <button onClick={getActivity} className="text-secondary"><i className="fas fa-edit"></i></button>
                             <a href="#" className="text-danger ml-2"><i className="fas fa-trash-alt"></i></a>
                         </td>
                         </tr>

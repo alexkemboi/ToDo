@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "phonebook",
+  database: "todoapp",
 });
 
 const bodyParser = require("body-parser");
@@ -23,12 +23,10 @@ db.connect((err) => {
 });
 
 app.post("/activities", (req, res) => {
-  const {
-   activity
-  } = req.body;
+  const {activity}   = req.body;
+  console.log(activity);
 
-  const sql = `INSERT INTO activities (Activity)
-                  VALUES (?)`;
+  const sql = `INSERT INTO activities (Activity) VALUE (?)`;
   db.query(
     sql,
     [activity],
@@ -44,87 +42,19 @@ app.post("/activities", (req, res) => {
   );
 });
 
-app.get("/getContacts", (req, res) => {
-  const sql = `SELECT * FROM contacts`;
+app.get("/getActivities", (req, res) => {
+  const sql = `SELECT * FROM activities`;
   db.query(sql, (err, result) => {
     if (err) {
-      console.error("Error selecting contacts from database: " + err.stack);
-      res.status(500).send("Error selecting contacts from database");
+      console.error("Error selecting activities from database: " + err.stack);
+      res.status(500).send("Error selecting activities from database");
       return;
     }
-    console.log("Contact selected from database succesfully ");
+    console.log("Activity selected from database succesfully ");
     res.send(JSON.stringify(result));
+    console.log(results);
     //result.setHeader("Content-Type", "application/json");
   });
-});
-
-app.get("/searchContacts", (req, res) => {
-  const searchParams = req.query.phoneNumber;
-  const phoneNumber = searchParams;
-  console.log("Phone Number:", searchParams);
-  const query = `SELECT * FROM contacts WHERE PhoneNumber=${phoneNumber}`;
-  db.query(query, (err, result) => {
-    if (err) {
-      console.error("Error selecting contacts from database: " + err.stack);
-      res.status(500).send("Error selecting contacts from database");
-      return;
-    }
-    console.log("Contact selected from database successfully:", result);
-    res.send(JSON.stringify(result));
-  });
-});
-
-// Handle DELETE request to /deleteContact
-app.delete("/deleteContact", (req, res) => {
-  const phoneNumber = req.query.phoneNumber;
-  // Delete contact from database
-  console.log(phoneNumber);
-  const sqlq = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
-  const phoneNumbersToDelete = phoneNumber;
-  const sql = `DELETE FROM contacts WHERE PhoneNumber IN (${phoneNumbersToDelete})`;
-
-  db.query(sql, (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-    console.log(`Deleted ${result.affectedRows} rows from contacts table.`);
-    res.send(JSON.stringify(result));
-  });
-});
-
-app.put("/UpdateContacts", (req, res) => {
-  const {
-    FirstName,
-    LastName,
-    PhoneNumber,
-    Email,
-    ContactImage,
-    PhysicalAddress,
-  } = req.body;
-
-  const sql = `UPDATE contacts SET FirstName = ?, LastName = ?, PhoneNumber = ?, Email = ?, ContactImage = ?, PhysicalAddress = ? WHERE PhoneNumber = ?`;
-  db.query(
-    sql,
-    [
-      FirstName,
-      LastName,
-      PhoneNumber,
-      Email,
-      ContactImage,
-      PhysicalAddress,
-      PhoneNumber,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error updating contact in database: " + err.stack);
-        res.status(500).send("Error updating contact in database");
-        return;
-      }
-      console.log("Contact updated in database with id " + PhoneNumber);
-      res.send(result);
-    }
-  );
 });
 
 app.listen(3000, () => {
